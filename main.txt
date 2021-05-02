@@ -9,7 +9,9 @@ New Repo
 3. git init
 4. Make repo on github
 5. git remote add origin "repo url"
-6. git push -u origin master
+6. git add .
+7. git commit -m "message"
+8. git push -u origin master
 
 Clone Repo
 1. get clone "repo url"
