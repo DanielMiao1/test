@@ -2,7 +2,7 @@ Make Changes
 1. git add .
 2. git commit -m "message"
 3. git push
-Made changes here
+
 New Repo
 1. mkdir directory_name
 2. cd directory_name
@@ -14,4 +14,17 @@ New Repo
 8. git push -u origin master
 
 Clone Repo
-1. get clone "repo url"
+1. git clone "repo url"
+
+Pull Remote Changes
+1. git pull
+
+Resolve Merge Conflicts
+1. git pull
+2. go into file with merge conflicts and select correct version
+3. git add .
+4. git commit -m 'fixed conflicts'
+5. git push
+
+Alternative:
+Use github GUI to upload your local file (and keep remote file in history)
