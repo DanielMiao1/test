@@ -1,0 +1,15 @@
+Make Changes
+1. git add .
+2. git commit -m "message"
+3. git push
+
+New Repo
+1. mkdir directory_name
+2. cd directory_name
+3. git init
+4. Make repo on github
+5. git remote add origin "repo url"
+6. git push -u origin master
+
+Clone Repo
+1. get clone "repo url"
