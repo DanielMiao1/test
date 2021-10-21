@@ -1,2 +1,2 @@
 def test():
-	print("paSSED")
+	print("test passed")
