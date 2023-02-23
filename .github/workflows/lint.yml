@@ -1,2 +1,42 @@
-- name: Lint Action
-  uses: wearerequired/lint-action@v2.3.0
+name: Lint
+
+on:
+  # Trigger the workflow on push or pull request,
+  # but only for the main branch
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  run-linters:
+    name: Run style linters
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      # ESLint and Prettier must be in `package.json`
+      - name: Install stylelint
+        run: npm install --save-dev stylelint stylelint-config-standard
+
+      - name: Install prettier
+        run: npm install --save-dev --save-exact prettier
+
+      - name: Install ESLint
+        run: npm install eslint
+
+      - name: Run linters
+        uses: wearerequired/lint-action@v2
+        with:
+          eslint: true
+          stylelint: true
+          prettier: true
