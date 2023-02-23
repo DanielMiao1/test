@@ -1,8 +1,6 @@
 name: Lint
 
 on:
-  # Trigger the workflow on push or pull request,
-  # but only for the main branch
   push:
     branches:
       - master
@@ -22,11 +20,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12
-
-      # ESLint and Prettier must be in `package.json`
-      - name: Install stylelint
-        run: npm install --save-dev stylelint stylelint-config-standard
+          node-version: 18
 
       - name: Install prettier
         run: npm install --save-dev --save-exact prettier
@@ -38,5 +32,4 @@ jobs:
         uses: wearerequired/lint-action@v2
         with:
           eslint: true
-          stylelint: true
           prettier: true
