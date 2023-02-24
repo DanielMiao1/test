@@ -10,13 +10,13 @@ on:
 
 jobs:
   run-linters:
-    name: Run style linters
+    name: Run
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        run: exit 1
+      - name: Run program
+        run: python3 .github/workflows/css_style.py
 
