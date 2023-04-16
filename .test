@@ -1,6 +1,0 @@
-// TEST
-
-function f(x) {
-	// INDENTED
-	console.log("some stuff");
-};
