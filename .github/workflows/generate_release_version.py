@@ -1,5 +1,6 @@
-import subprocess
 import datetime
+import re
+import subprocess
 
 tags_process = subprocess.Popen(["git", "for-each-ref", "--sort=creatordate", "--format", "'%(refname) %(taggerdate)'", "refs/tags"], stdout=subprocess.PIPE)
 tags = ""
@@ -17,6 +18,6 @@ for tag in reversed(tags.splitlines()):
 		continue
 
 	time = datetime.datetime.utcnow().strftime("%Y%m%d%H%M%S")
+	tag = re.sub(r"\+\d+", "", tag)
 	print(f"{tag}+{time}")
 	break
-
