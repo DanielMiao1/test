@@ -49,6 +49,13 @@ jobs:
           COMMIT_HASH=`git rev-parse --short HEAD`
           echo "Latest commit short hash: $COMMIT_HASH"
           echo "commit_message=update sitemap for commit $COMMIT_HASH" >> $GITHUB_OUTPUT
+      - name: Get pull request base branch
+        if: ${{ steps.requires_update.outputs.update_required == 'UPDATE-REQUIRED' }}
+        id: pull_base
+        run: |
+          CURRENT_BRANCH=`git rev-parse --abbrev-ref HEAD`
+          echo "A pull request will be created with the base branch $CURRENT_BRANCH"
+          echo "pull_base=$CURRENT_BRANCH" >> $GITHUB_OUTPUT
       - name: Create new branch and push changes
         if: ${{ steps.requires_update.outputs.update_required == 'UPDATE-REQUIRED' }}
         uses: EndBug/add-and-commit@v9
@@ -58,8 +65,10 @@ jobs:
           default_author: github_actions
           message: ${{ steps.commit_message.outputs.commit_message }}
       - name: Create pull request
+        if: ${{ steps.requires_update.outputs.update_required == 'UPDATE-REQUIRED' }}
         uses: peter-evans/create-pull-request@v5
         with:
           branch: ${{ steps.branch_name.outputs.branch_name }}
+          base: ${{ steps.pull_base.outputs.pull_base }}
           delete-branch: true
           title: ${{ steps.commit_message.outputs.commit_message }}
