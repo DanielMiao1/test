@@ -1,0 +1,42 @@
+name: Generate Sitemap
+
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+    branches:
+      - "**"
+
+jobs:
+  create-release:
+    name: Generate Sitemap
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+      - name: Check if the existing sitemap is up-to-date
+        id: requires_update
+        run: |
+          UPDATE_REQUIRED=`python3 ./.github/workflows/generate_sitemap.py -c`
+          echo "Check result: $UPDATE_REQUIRED"
+          echo "update_required=$UPDATE_REQUIRED" >> $GITHUB_OUTPUT
+      - name: Remove existing sitemaps
+        if: steps.requires_update.outputs.update_required == "UPDATE-REQUIRED"
+        run: rm -f sitemap.xml
+      - name: Create sitemap
+        if: steps.requires_update.outputs.update_required == "UPDATE-REQUIRED"
+        run: |
+          SITEMAP=`python3 ./.github/workflows/generate_sitemap.py`
+          echo "Generated sitemap:\n$SITEMAP"
+          echo "$SITEMAP" >> sitemap.xml
+      - name: Amend changes
+        if: steps.requires_update.outputs.update_required == "UPDATE-REQUIRED"
+        uses: EndBug/add-and-commit@v9
+        with:
+          - add: "sitemap.xml"
