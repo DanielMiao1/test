@@ -76,4 +76,4 @@ jobs:
             sitemap update
           delete-branch: true
           signoff: true
-
+          author: GitHub Actions <41898282+github-actions[bot]@users.noreply.github.com>
