@@ -1,3 +1,6 @@
 main
 node_modules
 package-lock.json
+venv
+.idea
+.vscode
