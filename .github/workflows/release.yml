@@ -16,32 +16,18 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+      - name: Fetch tags
+        run: git fetch --tags origin
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
       - name: Generate release name
         id: release_name
         run: |
-          echo "release_name=$(python3 -c <<EOF
-import subprocess
-import datetime
-
-tags_process = subprocess.Popen(["git", "for-each-ref", "--sort=creatordate", "--format", "'%(refname) %(taggerdate)'", "refs/tags"], stdout=subprocess.PIPE)
-tags = ""
-
-while True:
-	data = tags_process.stdout.read(1)
-	if not data:
-		break
-
-	tags += data.decode("UTF-8")
-
-for tag in reversed(tags.splitlines()):
-	tag = tag[1:-2].replace("refs/tags/", "")
-	if not tag.startswith("v"):
-		continue
-
-	time = datetime.datetime.utcnow().strftime("%Y%m%d%H%M%S")
-	print(f"{tag}+{time}")
-	break
-EOF)" >> $GITHUB_OUTPUT
+          VERSION=`python3 ./.github/workflows/generate_release_version.py`
+          echo "Creating release: $VERSION"
+          echo "release_name=$VERSION" >> $GITHUB_OUTPUT
       - name: Release
         uses: softprops/action-gh-release@v0.1.15
         with:
