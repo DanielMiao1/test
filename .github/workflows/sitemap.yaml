@@ -49,9 +49,31 @@ jobs:
           COMMIT_HASH=`git rev-parse --short HEAD`
           echo "Latest commit short hash: $COMMIT_HASH"
           echo "commit_message=update sitemap for commit $COMMIT_HASH" >> $GITHUB_OUTPUT
+          echo "commit_hash=$COMMIT_HASH" >> $GITHUB_OUTPUT
+      - name: Generate pull request body
+        if: ${{ steps.requires_update.outputs.update_required == 'UPDATE-REQUIRED' }}
+        id: request_body
+        run: |
+          DIFF=`git diff sitemap.xml`
+          echo "Generated diff of the sitemap:\n$DIFF"
+          echo "request_body<<EOF" >> $GITHUB_OUTPUT
+          echo $DIFF >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
       - name: Create pull request
         if: ${{ steps.requires_update.outputs.update_required == 'UPDATE-REQUIRED' }}
         uses: peter-evans/create-pull-request@v5
         with:
           branch: ${{ steps.branch_name.outputs.branch_name }}
           title: ${{ steps.commit_message.outputs.commit_message }}
+          body: |
+            Updates the sitemap.xml file for commit ${{ steps.commit_message.outputs.commit_hash }}.
+            _View the workflow run at ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}_
+            ```diff
+            ${{ steps.request_body.outputs.request_body }}
+            ```
+          commit-message: ${{ steps.commit_message.outputs.commit_message }}
+          labels: |
+            sitemap update
+          delete-branch: true
+          signoff: true
+
