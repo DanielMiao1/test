@@ -67,10 +67,10 @@ jobs:
           title: ${{ steps.commit_message.outputs.commit_message }}
           body: |
             Updates the sitemap.xml file for commit ${{ steps.commit_message.outputs.commit_hash }}.
-            _View the workflow run at ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}_
             ```diff
             ${{ steps.request_body.outputs.request_body }}
             ```
+            _View the workflow run at ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}._
           commit-message: ${{ steps.commit_message.outputs.commit_message }}
           labels: |
             sitemap update
