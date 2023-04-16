@@ -13,6 +13,11 @@ jobs:
     name: Generate Sitemap
     runs-on: ubuntu-latest
     permissions: write-all
+    outputs:
+      update_required: ${{ steps.requires_update.outputs.update_required }}
+      branch_name: ${{ steps.branch_name.outputs.branch_name }}
+      pull_base: ${{ steps.pull_base.outputs.pull_base }}
+      commit_message: ${{ steps.commit_message.outputs.commit_message }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -71,9 +76,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create pull request
-        if: ${{ steps.requires_update.outputs.update_required == 'UPDATE-REQUIRED' }}
+        if: ${{ needs.create-release.outputs.update_required == 'UPDATE-REQUIRED' }}
         uses: peter-evans/create-pull-request@v5
         with:
-          branch: ${{ steps.branch_name.outputs.branch_name }}
-          base: ${{ steps.pull_base.outputs.pull_base }}
-          title: ${{ steps.commit_message.outputs.commit_message }}
+          branch: ${{ needs.create-release.outputs.branch_name }}
+          base: ${{ needs.create-release.outputs.pull_base }}
+          title: ${{ needs.create-release.outputs.commit_message }}
