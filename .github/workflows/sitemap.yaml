@@ -76,15 +76,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
+        if: ${{ needs.create-release.outputs.update_required == 'UPDATE-REQUIRED' }}
         uses: actions/checkout@v3
       - name: Fetch changes from target branch
+        if: ${{ needs.create-release.outputs.update_required == 'UPDATE-REQUIRED' }}
         run: |
           git checkout -b ${{ needs.create-release.outputs.branch_name }}
           git pull origin ${{ needs.create-release.outputs.branch_name }}
       - name: Create pull request
         if: ${{ needs.create-release.outputs.update_required == 'UPDATE-REQUIRED' }}
-        uses: peter-evans/create-pull-request@v5
-        with:
-          branch: ${{ needs.create-release.outputs.branch_name }}
-          base: ${{ needs.create-release.outputs.pull_base }}
-          title: ${{ needs.create-release.outputs.commit_message }}
+        runs: |
+          gh pr create -f
