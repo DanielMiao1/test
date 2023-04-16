@@ -77,6 +77,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+      - name: Fetch changes from target branch
+        run: |
+          git checkout -b ${{ needs.create-release.outputs.branch_name }}
+          git pull origin ${{ needs.create-release.outputs.branch_name }}
       - name: Create pull request
         if: ${{ needs.create-release.outputs.update_required == 'UPDATE-REQUIRED' }}
         uses: peter-evans/create-pull-request@v5
