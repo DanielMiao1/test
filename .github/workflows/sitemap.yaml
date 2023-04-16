@@ -70,5 +70,4 @@ jobs:
         with:
           branch: ${{ steps.branch_name.outputs.branch_name }}
           base: ${{ steps.pull_base.outputs.pull_base }}
-          delete-branch: true
           title: ${{ steps.commit_message.outputs.commit_message }}
