@@ -35,8 +35,25 @@ jobs:
           SITEMAP=`python3 ./.github/workflows/generate_sitemap.py`
           echo "Generated sitemap:\n$SITEMAP"
           echo "$SITEMAP" >> sitemap.xml
-      - name: Amend changes
+      - name: Generate name for new branch
+        if: ${{ steps.requires_update.outputs.update_required == 'UPDATE-REQUIRED' }}
+        id: branch_name
+        run: |
+          COMMIT_HASH=`git rev-parse --short HEAD`
+          echo "Latest commit short hash: $COMMIT_HASH"
+          echo "branch_name=sitemaps/update-$COMMIT_HASH" >> $GITHUB_OUTPUT
+      - name: Generate commit message
+        if: ${{ steps.requires_update.outputs.update_required == 'UPDATE-REQUIRED' }}
+        id: commit_message
+        run: |
+          COMMIT_HASH=`git rev-parse --short HEAD`
+          echo "Latest commit short hash: $COMMIT_HASH"
+          echo "commit_message=update sitemap for $COMMIT_HASH" >> $GITHUB_OUTPUT
+      - name: Create new branch and push changes
         if: ${{ steps.requires_update.outputs.update_required == 'UPDATE-REQUIRED' }}
         uses: EndBug/add-and-commit@v9
         with:
           add: "sitemap.xml"
+          new_branch: ${{ steps.branch_name.outputs.branch_name }}
+          default_author: github_actions
+          message: ${{ steps.commit_message.outputs.commit_message }}

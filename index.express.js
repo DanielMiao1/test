@@ -17,6 +17,11 @@ app.get("/", function(_, response) {
   response.sendFile(path.join(process.cwd(), "index.html"));
 });
 
+app.get("/aaaaaa-test", function(_, response) {
+  // eslint-disable-next-line no-undef
+  response.sendFile(path.join(process.cwd(), "index.html"));
+});
+
 app.get("*", function(_, response) {
   response.status(404).end();
 });
