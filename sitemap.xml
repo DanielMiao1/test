@@ -7,6 +7,12 @@
 		<loc>https://example.com/aaaaaa-test</loc>
 	</url>
 	<url>
+		<loc>https://example.com/test-11111111</loc>
+	</url>
+	<url>
+		<loc>https://example.com/test-11111112222222222</loc>
+	</url>
+	<url>
 		<loc>https://example.com/test1</loc>
 	</url>
 	<url>
