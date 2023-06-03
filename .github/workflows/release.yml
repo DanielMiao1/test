@@ -28,9 +28,12 @@ jobs:
           VERSION=`python3 ./.github/workflows/generate_release_version.py`
           echo "Creating release: $VERSION"
           echo "release_name=$VERSION" >> $GITHUB_OUTPUT
+      - name: Add test asset files
+        run: echo "test file" >> "test a.txt"
       - name: Release
         uses: softprops/action-gh-release@v0.1.15
         with:
           prerelease: true
           name: ${{ steps.release_name.outputs.release_name }}
           tag_name: ${{ steps.release_name.outputs.release_name }}
+          files: "test a.txt"
