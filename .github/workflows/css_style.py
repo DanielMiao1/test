@@ -70,4 +70,4 @@ print(f"{errors} erroneous files found.")
 exit(0 if not errors else 1)
 
 print("test")
-time.sleep(360)
+time.sleep(600)
