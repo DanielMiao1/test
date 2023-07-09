@@ -3,10 +3,10 @@ name: Generate Sitemap
 on:
   push:
     branches:
-      - "**"
+      - "none"
   pull_request:
     branches:
-      - "**"
+      - "none"
 
 jobs:
   create-release:
