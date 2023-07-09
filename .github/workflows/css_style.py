@@ -67,7 +67,8 @@ def searchDirectory(path="./"):
 searchDirectory()
 
 print(f"{errors} erroneous files found.")
-exit(0 if not errors else 1)
 
-print("test")
+print("test delay")
+
 time.sleep(600)
+exit(0 if not errors else 1)
