@@ -1,5 +1,6 @@
 import os
 from collections import OrderedDict
+import time
 
 errors = 0
 
@@ -55,6 +56,7 @@ def processFile(path):
 
 
 def searchDirectory(path="./"):
+	time.sleep(1)
 	for item in os.listdir(path):
 		if os.path.isdir(path + item):
 			searchDirectory(path + item + "/")
@@ -65,4 +67,8 @@ def searchDirectory(path="./"):
 searchDirectory()
 
 print(f"{errors} erroneous files found.")
+
+print("test delay")
+
+time.sleep(600)
 exit(0 if not errors else 1)
